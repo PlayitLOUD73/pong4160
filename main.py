@@ -12,6 +12,9 @@ pygame.init()
 
 view.view_init()
 
+ents = model.setupGame()
+
 while True:
-    controller.get_events()
-    view.update_screen()
+    events = controller.get_events()
+    model.update(ents, events)
+    view.update_screen(ents)
