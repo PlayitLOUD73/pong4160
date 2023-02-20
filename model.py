@@ -24,7 +24,7 @@ class Model:
         list = []
     
         list.append(Ent("paddle", "rect", (0, 0, 255), (rX, rY, rW, rH), (0,0)))
-        list.append(Ent("ball", "circ", (255, 255, 255), Circle(250, 250, 5), (25,20)))
+        list.append(Ent("ball", "circ", (255, 255, 255), Circle(250, 250, 5), (50,60)))
         list.append(Enemy("enemy", "rect", (255, 0, 00), (eX, eY, rW, rH), (0,0)))
         return list
     
@@ -32,10 +32,10 @@ class Model:
     def readInput(self, ent, event):
         if event == pygame.K_UP:
             old = ent.shape
-            ent.shape = (old[0], old[1]-1, old[2], old[3])
+            ent.shape = (old[0], old[1]-3, old[2], old[3])
         elif event == pygame.K_DOWN:
             old = ent.shape
-            ent.shape = (old[0], old[1]+1, old[2], old[3])
+            ent.shape = (old[0], old[1]+3, old[2], old[3])
         return ent
 
     # bounds check (might not be finished)

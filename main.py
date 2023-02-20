@@ -14,7 +14,10 @@ view.view_init()
 
 ents = model.setupGame()
 
+clock = pygame.time.Clock()
+
 while True:
+    clock.tick(60)
     events = controller.get_events()
     model.update(ents, events)
     view.update_screen(ents)
