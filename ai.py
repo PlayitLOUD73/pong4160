@@ -8,10 +8,12 @@ class Enemy(Ent):
         super().__init__(name, kind, color, shape, v, a)
 
     def traceBall(self, b):
+        print(b.v.angle_to(pygame.math.Vector2(1,0)))
         pass
 
     def move(self, pos):
         old = self.shape
+        #self.traceBall(b)
         if self.shape[1] + 25 < pos:
             self.shape = (old[0], old[1]+3, old[2], old[3])
         elif self.shape[1] + 25 > pos:

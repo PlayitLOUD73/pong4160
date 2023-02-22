@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, random
 
 from entity import Ent
 from circle import Circle
@@ -23,11 +23,20 @@ class Model:
         rH = 50
         list = []
 
+        # random direction and velocity
+        random.seed()
+        vX = random.randint(250, 350) / 100.0
+        vY = random.randint(250, 350) / 100.0
+        vD = random.randint(0,1)
+
+        if vD == 1:
+            vY *= -1.0
+
         # player paddle
         list.append(Ent("paddle", "rect", (0, 0, 255), (rX, rY, rW, rH), pygame.math.Vector2(0,0), (0, 0)))
 
         # ball
-        list.append(Ent("ball", "circ", (255, 255, 255), Circle(pygame.math.Vector2(250, 250), 5), pygame.math.Vector2(2.5,3.0), (0, 0)))
+        list.append(Ent("ball", "circ", (255, 255, 255), Circle(pygame.math.Vector2(250, 250), 5), pygame.math.Vector2(vX,vY), (0, 0)))
 
         # ai paddle
         list.append(Enemy("enemy", "rect", (255, 0, 0), (eX, eY, rW, rH), pygame.math.Vector2(0,0), (0, 0)))
@@ -37,10 +46,10 @@ class Model:
     def readInput(self, ent, event):
         if event == pygame.K_UP:
             old = ent.shape
-            ent.shape = (old[0], old[1]-3, old[2], old[3])
+            ent.shape = (old[0], old[1]-6, old[2], old[3])
         elif event == pygame.K_DOWN:
             old = ent.shape
-            ent.shape = (old[0], old[1]+3, old[2], old[3])
+            ent.shape = (old[0], old[1]+6, old[2], old[3])
         return ent
 
     # bounds check (might not be finished)
@@ -95,6 +104,7 @@ class Model:
         for event in events:
             ents[0] = self.readInput(ents[0], event)
         self.updateBall(ents[1], ents[0], ents[2])
+        # ents[2].traceBall(ents[1])
         ents[2].move(ents[1].shape.pos.y)
 
         
