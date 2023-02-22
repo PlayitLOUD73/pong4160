@@ -21,6 +21,6 @@ class View:
             if x.kind == "rect":
                 pygame.draw.rect(self.surface, x.color, x.shape)
             elif x.kind == "circ":
-                pygame.draw.circle(self.surface, x.color, (x.shape.x, x.shape.y), x.shape.rad)
+                pygame.draw.circle(self.surface, x.color, (x.shape.pos.x, x.shape.pos.y), x.shape.rad)
         
         pygame.display.update()
