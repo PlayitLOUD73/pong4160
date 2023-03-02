@@ -12,8 +12,10 @@ class Model:
     def __init__(self):
         self.totalHits = 0
 
-    # Hardcoded for 1 paddle and 1 ball for now
+    # Hardcoded for 2 paddles and 1 ball for now
     def setupGame(self):
+
+        aiSpeed = 4
 
         rX = 50
         rY = 50
@@ -39,7 +41,7 @@ class Model:
         list.append(Ent("ball", "circ", (255, 255, 255), Circle(pygame.math.Vector2(250, 250), 5), pygame.math.Vector2(vX,vY), (0, 0)))
 
         # ai paddle
-        list.append(Enemy("enemy", "rect", (255, 0, 0), (eX, eY, rW, rH), pygame.math.Vector2(0,0), (0, 0)))
+        list.append(Enemy("enemy", "rect", (255, 0, 0), (eX, eY, rW, rH), pygame.math.Vector2(aiSpeed,0), (0, 0)))
         return list
     
     # reads list of events
@@ -49,7 +51,7 @@ class Model:
             ent.shape = (old[0], old[1]-6, old[2], old[3])
         elif event == pygame.K_DOWN:
             old = ent.shape
-            ent.shape = (old[0], old[1]+6, old[2], old[3])
+            ent.shape = (old[0], old[1]+6, old[2], old[3])          
         return ent
 
     # bounds check (might not be finished)
@@ -72,41 +74,45 @@ class Model:
     def updateBall(self, b, p, e):
         b.shape.pos.x += (b.v.x)
         b.shape.pos.y += (b.v.y)
-        # b.shape.pos += b.v
         
         # checking for borders
+        
+        # Bottom Border
         if self.boundsCheck(b, 0, 480, 640, 480):
-            # b.v = (b.v[0], b.v[1] * -1.0)
             b.v = b.v.reflect(pygame.math.Vector2(0, 1))
+        
+        # Right Border
         if self.boundsCheck(b, 640, 0, 640, 480):
-            # b.v = (b.v[0] * -1.0, b.v[1])
-            b.v = b.v.reflect(pygame.math.Vector2(1,0))
+            return 1 # player wins
+        
+        # Top Border
         if self.boundsCheck(b, 0, 0, 640, 0):
-            # b.v = (b.v[0], b.v[1] * 1.0)
             b.v = b.v.reflect(pygame.math.Vector2(0,1))
         
+        # Left Border
+        if self.boundsCheck(b, 0, 0, 0, 480):
+            return -1 # ai wins
+
         # checking for paddle
         rect = pygame.Rect(p.shape)
         if self.boundsCheck(b, rect.topright[0], rect.topright[1], rect.bottomright[0], rect.bottomright[1]):
-            # b.v = (b.v.x * -1.0, b.v[1])
             b.v = b.v.reflect(pygame.math.Vector2(1,0))
             self.speedUp(b)
         
         # checking for ai paddle
         enemyRect = pygame.Rect(e.shape)
         if self.boundsCheck(b, enemyRect.topleft[0], enemyRect.topleft[1], enemyRect.bottomleft[0], enemyRect.bottomleft[1]):
-            # b.v = (b.v[0] * -1.0, b.v[1])
             b.v = b.v.reflect(pygame.math.Vector2(1,0))
             self.speedUp(b)
+        
+        return 0
 
     # updates state of the game
     def update(self, ents, events):
+        
         for event in events:
             ents[0] = self.readInput(ents[0], event)
-        self.updateBall(ents[1], ents[0], ents[2])
-        # ents[2].traceBall(ents[1])
+        state = self.updateBall(ents[1], ents[0], ents[2])
         ents[2].move(ents[1].shape.pos.y)
 
-        
-
-        return ents
+        return ents, state
