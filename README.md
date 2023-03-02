@@ -55,4 +55,24 @@ The controller is the most generalized section of the engine. It grabs events fr
 
 ## Architecture Diagram
 
+<img src="diagram.png">
+
 ## Future Work
+
+### Possible Enhancements
+
+1. I would like to add proper angle calculations to improve the realism of the game.
+2. I would like to improve the ai to make it seem more believable by giving the ai fuzzy ball positions.
+3. I would like to add a scoring mechanic to the UI.
+
+### Generalizations
+
+* entity system
+* boundary checking
+* view
+* controller
+* input from model
+* update from model
+* main game loop
+
+These sections are all relatively generalizable. Other games that have simple physics behaviors and use a few simple shapes like balls and rectangles could easily be accomadated by this engine. Game logic would need to be rewritten of course, but a lot of the components are reusable. 
