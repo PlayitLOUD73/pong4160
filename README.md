@@ -1,7 +1,7 @@
 # pong4160
 
-[<img src="gameplay.png">]
-[<img src="gameover.png">]
+<img src="gameplay.png">
+<img src="gameover.png">
 
 ## Features
 * Enemy AI paddle
